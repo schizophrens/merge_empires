@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/MineExtremities"
+	"$surfaceprop" "metal"
+	"$model" "1"
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/GoldCrackFloor"
+	"$surfaceprop" "concrete"
+	"$model" "1"
+}

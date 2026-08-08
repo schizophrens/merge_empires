@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/Stone_Light"
+	"$surfaceprop" "concrete"
+	"$model" "1"
+}

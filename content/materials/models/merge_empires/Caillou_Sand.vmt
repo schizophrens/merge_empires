@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/Caillou_Sand"
+	"$surfaceprop" "sand"
+	"$model" "1"
+}

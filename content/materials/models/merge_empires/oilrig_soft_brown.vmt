@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/merge_empires/oilrig_soft_brown"
+    "$surfaceprop" "metal"
+}

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/Walls"
+	"$surfaceprop" "brick"
+	"$model" "1"
+}

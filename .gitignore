@@ -1,0 +1,19 @@
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs / temp
+*.log
+*.tmp
+*.bak
+*~
+
+# Raw uncut audio kept next to the processed files as a local backup.
+# The gamemode never loads them.
+*.orig.wav

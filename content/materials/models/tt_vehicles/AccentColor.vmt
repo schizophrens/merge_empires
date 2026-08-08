@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/tt_vehicles/AccentColor"
+    "$surfaceprop" "metal"
+}
+

@@ -1,0 +1,9 @@
+SpriteCard {
+	$BaseTexture 		"particle/fastSideSprites/fastSideSprite128_V2"
+	$AddOverBlend 		1
+	$OverbrightFactor	32
+	$ExtractGreenAlpha 	1
+	$AddSelf 			1
+	$DepthBlend 		1
+	$DepthBlendScale 	16
+}

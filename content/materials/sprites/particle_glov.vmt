@@ -1,0 +1,9 @@
+"UnlitGeneric" //Why did you unpack the addon, huh?
+{
+	"$basetexture" "sprites/particle_glov"
+	"$additive" "1"
+	"$translucent" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$ignorez" "1"
+}

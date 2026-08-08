@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/MainBody"
+	"$surfaceprop" "default"
+	"$model" "1"
+}

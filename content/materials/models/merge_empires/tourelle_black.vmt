@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/merge_empires/tourelle_black"
+    "$surfaceprop" "metal"
+}

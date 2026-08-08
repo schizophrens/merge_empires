@@ -1,0 +1,9 @@
+"UnlitGeneric"
+{
+    "$basetexture"  "mergeempires/map/floor/me_gold"
+    "$vertexcolor"  "1"
+    "$vertexalpha"  "1"
+    "$translucent"  "1"
+    "$additive"     "1"
+    "$nocull"       "1"
+}

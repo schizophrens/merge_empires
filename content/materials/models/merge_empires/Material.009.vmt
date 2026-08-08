@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/Material.009"
+	"$surfaceprop" "metal"
+	"$model" "1"
+}

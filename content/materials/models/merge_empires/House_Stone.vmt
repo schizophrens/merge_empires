@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/House_Stone"
+	"$surfaceprop" "concrete"
+	"$model" "1"
+}

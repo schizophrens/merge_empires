@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/merge_empires/anti_missile_white"
+    "$surfaceprop" "metal"
+}

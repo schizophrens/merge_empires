@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/merge_empires/tent_soldat_grey"
+    "$surfaceprop" "metal"
+}

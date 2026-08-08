@@ -1,0 +1,23 @@
+* text=auto eol=lf
+
+# Source engine binaries -- never touch these bytes.
+*.bsp  binary
+*.mdl  binary
+*.vtx  binary
+*.vvd  binary
+*.phy  binary
+*.vtf  binary
+*.pcf  binary
+
+# Media and fonts.
+*.png  binary
+*.gif  binary
+*.jpg  binary
+*.jpeg binary
+*.mp3  binary
+*.wav  binary
+*.ogg  binary
+*.aiff binary
+*.aif  binary
+*.ttf  binary
+*.otf  binary

@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/Grass"
+	"$surfaceprop" "grass"
+	"$model" "1"
+}

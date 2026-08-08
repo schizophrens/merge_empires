@@ -1,0 +1,9 @@
+"SpriteCard"
+{
+	"$basetexture" "particles/ins_smoke_0a"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+	"$translucent" "1"
+	"$depthblend"  "1"
+	"$depthblendscale"  "22"
+}

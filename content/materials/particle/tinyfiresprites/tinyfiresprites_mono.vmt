@@ -1,0 +1,7 @@
+SpriteCard
+{
+	$additive 	  1
+	$basetexture   "particle/tinyfiresprites/tinyfiresprites_mono"
+	$OVERBRIGHTFACTOR 5
+	$DEPTHBLEND 1
+}

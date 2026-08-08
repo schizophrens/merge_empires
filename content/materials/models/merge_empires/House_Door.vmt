@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/House_Door"
+	"$surfaceprop" "wood"
+	"$model" "1"
+}

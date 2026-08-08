@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/tt_vehicles/PolyPack_Main1"
+    "$surfaceprop" "metal"
+}
+

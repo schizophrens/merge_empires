@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/Rotational_Platform"
+	"$surfaceprop" "metal"
+	"$model" "1"
+}

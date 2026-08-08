@@ -1,0 +1,11 @@
+"Gamemode"
+{
+	"base"			"sandbox"
+	"title"			"Merge Empires"
+	"maps"			"merge_empires"
+	"menusystem"	"1"
+
+	"settings"
+	{
+	}
+}

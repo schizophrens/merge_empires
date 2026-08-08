@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/tt_soldiers/TTsoldier"
+	"$surfaceprop" "flesh"
+	"$model" "1"
+}

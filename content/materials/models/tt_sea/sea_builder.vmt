@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+    "$basetexture" "models/tt_sea/sea_builder"
+    "$surfaceprop" "metal"
+}
+

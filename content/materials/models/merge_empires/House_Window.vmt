@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/merge_empires/House_Window"
+	"$selfillum" "1"
+	"$surfaceprop" "glass"
+	"$model" "1"
+}
