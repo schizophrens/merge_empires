@@ -29,3 +29,7 @@
 The final path must be `garrysmod/gamemodes/merge_empires/`.
 
 Then start a server on the `merge_empires` map with the gamemode set to `merge_empires`.
+
+---
+
+<sub>Ignore the star count on this repo, one of my friends had a bit of fun botting it ^^</sub>
