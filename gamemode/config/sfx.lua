@@ -54,7 +54,7 @@ ME.SfxDefs = {
 	ui_hover      = { file = "sfx/ui/ui_hover",     variants = 1, vol = 0.25, pitch = 0.05, voices = 1, ui = true, cooldown = 0.05 },
 	ui_click      = { file = "sfx/ui/ui_click",     variants = 1, vol = 0.35, pitch = 0.04, voices = 1, ui = true, cooldown = 0.04 },
 	ping          = { file = "sfx/ui/ping",         variants = 1, vol = 0.50, pitch = 0,    voices = 1, ui = true, cooldown = 0.3 },
-	chat_message  = { file = "sfx/ui/chat_message", variants = 1, vol = 0.35, pitch = 0,    voices = 1, ui = true, cooldown = 0.2 },
+	chat_message  = { file = "sfx/ui/chat_message", variants = 1, vol = 0.14, pitch = 0,    voices = 1, ui = true, cooldown = 0.2 },
 	ally_request  = { file = "sfx/ui/ally_request", variants = 1, vol = 0.50, pitch = 0,    voices = 1, ui = true },
 	inv_equip     = { file = "sfx/ui/inv_equip",    variants = 1, vol = 0.45, pitch = 0.03, voices = 1, ui = true, cooldown = 0.08 },
 

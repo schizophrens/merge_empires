@@ -4,6 +4,23 @@ ME.BuildingModels = ME.BuildingModels or {}
 local B = ME.Build
 local S = ME.UI.Scale
 
+local function localTeam()
+	local lp = LocalPlayer()
+	return IsValid(lp) and lp:Team() or -1
+end
+
+local COMBAT_LULL = 6
+local function combatPing(sFac, vFac)
+	local myTeam = localTeam()
+	if myTeam ~= sFac and myTeam ~= vFac then return end
+	local now = RealTime()
+	if (now - (ME._lastCombat or -999)) > COMBAT_LULL then
+		if B.ShowCombat then B.ShowCombat() end
+		ME.Sfx.Play2D("combat_alert")
+	end
+	ME._lastCombat = now
+end
+
 function ME.FitScale(cm, isEdge)
 	if not IsValid(cm) then return 1 end
 	local mins, maxs = cm:GetModelRenderBounds()
@@ -42,7 +59,7 @@ net.Receive("ME_BuildingSync", function()
 		cm:SetModelScale(ME.FitScale(cm, isEdge) * (isEdge and 1 or (b.fitMul or 1)), 0)
 		rec = { model = cm, bid = bid, mdl = model, centerB = b.center, fresh = true }
 		ME.BuildingModels[idx] = rec
-		if not built and fac == LocalPlayer():Team() and RealTime() > (ME.SfxGraceUntil or 0) then
+		if not built and fac == localTeam() and RealTime() > (ME.SfxGraceUntil or 0) then
 			ME.Sfx.Play("build_place", pos)
 		end
 	end
@@ -376,7 +393,7 @@ net.Receive("ME_UnitSync", function()
 	local rec = ME.UnitModels[idx]
 	if not rec or not IsValid(rec.model) or rec.kind ~= kind or rec.mdl ~= model then
 
-		if not rec and fac == LocalPlayer():Team() and RealTime() > (ME.SfxGraceUntil or 0) then
+		if not rec and fac == localTeam() and RealTime() > (ME.SfxGraceUntil or 0) then
 			ME.Sfx.Play("unit_ready", pos)
 		end
 		if rec and IsValid(rec.model) then rec.model:Remove() end
@@ -494,15 +511,7 @@ net.Receive("ME_Fire", function()
 	local sFac   = net.ReadInt(8)
 	local vFac   = net.ReadInt(8)
 
-	local myTeam = IsValid(LocalPlayer()) and LocalPlayer():Team() or -1
-	if myTeam == sFac or myTeam == vFac then
-		local now, LULL = RealTime(), 6
-		if (now - (ME._lastCombat or -999)) > LULL then
-			if B.ShowCombat then B.ShowCombat() end
-			ME.Sfx.Play2D("combat_alert")
-		end
-		ME._lastCombat = now
-	end
+	combatPing(sFac, vFac)
 	ME.MarkFight("u" .. idx)
 	local from
 	local rec = ME.UnitModels and ME.UnitModels[idx]
@@ -613,6 +622,7 @@ net.Receive("ME_CoreBeam", function()
 	local from = net.ReadVector()
 	local to   = net.ReadVector()
 	local tgt  = net.ReadUInt(16)
+	local vFac = net.ReadInt(8)
 
 	local cm
 	for _, m in ipairs(ME.CoreModels or {}) do if IsValid(m) and m.MEFaction == fac then cm = m break end end
@@ -630,6 +640,7 @@ net.Receive("ME_CoreBeam", function()
 		ME.FX[#ME.FX + 1] = rec
 	end
 	if tgt > 0 then
+		combatPing(fac, vFac)
 		ME.MarkFight("c" .. fac)
 
 		if ME.Sfx and (rec.tgt or 0) == 0 then ME.Sfx.Play("core_beam_start", to) end
@@ -698,6 +709,9 @@ end)
 net.Receive("ME_TurretFire", function()
 	local idx  = net.ReadUInt(16)
 	local tpos = net.ReadVector()
+	local sFac = net.ReadInt(8)
+	local vFac = net.ReadInt(8)
+	combatPing(sFac, vFac)
 	ME.MarkFight("b" .. idx)
 	local rec  = ME.BuildingModels and ME.BuildingModels[idx]
 	ME.Sfx.Play("turret_fire", (rec and IsValid(rec.model) and rec.model:GetPos()) or tpos)

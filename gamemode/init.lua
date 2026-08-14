@@ -335,7 +335,7 @@ function ME.OnCoreDestroyed(faction, pos)
 
 	local aliveF = {}
 	for i = 1, ME.Config.MaxFactions do
-		if IsValid(ME.Cores and ME.Cores[i]) then aliveF[#aliveF + 1] = i end
+		if ME.FactionInPlay(i) and IsValid(ME.Cores and ME.Cores[i]) then aliveF[#aliveF + 1] = i end
 	end
 	local over = #aliveF <= 1 or (#aliveF == 2 and ME.AreAllied(aliveF[1], aliveF[2]))
 	for _, ply in ipairs(team.GetPlayers(faction)) do
@@ -399,7 +399,7 @@ function ME.CheckWin()
 	if not ME.MatchActive then return end
 	local aliveF = {}
 	for i = 1, ME.Config.MaxFactions do
-		if IsValid(ME.Cores and ME.Cores[i]) then aliveF[#aliveF + 1] = i end
+		if ME.FactionInPlay(i) and IsValid(ME.Cores and ME.Cores[i]) then aliveF[#aliveF + 1] = i end
 	end
 
 	local done = #aliveF <= 1

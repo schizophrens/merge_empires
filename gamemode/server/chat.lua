@@ -40,10 +40,15 @@ local function canSay(ply)
     return true
 end
 
+local function isSpectating(ply)
+    local SS = ME.Session
+    return (SS and SS.active and SS.spectators and SS.spectators[ply]) and true or false
+end
+
 net.Receive("ME_Chat", function(_, ply)
     if not IsValid(ply) then return end
     local t = ply:Team()
-    if t < 1 or t > ((ME.Config and ME.Config.MaxFactions) or 6) then return end
+    if (t < 1 or t > ((ME.Config and ME.Config.MaxFactions) or 6)) and not isSpectating(ply) then return end
     if not canSay(ply) then return end
 
     local text = string.sub(net.ReadString() or "", 1, maxLen)

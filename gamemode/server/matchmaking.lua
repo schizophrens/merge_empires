@@ -68,7 +68,12 @@ local function cancelCountdown(mode)
     if timer.Exists("ME_MM_CD_" .. mode) then timer.Remove("ME_MM_CD_" .. mode) end
 end
 
-local function sessionBusy() return ME.Session and ME.Session.active end
+local function sessionBusy()
+    local SS = ME.Session
+    if not (SS and SS.active) then return false end
+    if SS.ReclaimIfDeserted and SS.ReclaimIfDeserted() then return false end
+    return true
+end
 
 local function maybeLaunch(mode)
     if sessionBusy() then return end
@@ -105,7 +110,7 @@ end
 
 function ME.MM.Launch(mode)
     cancelCountdown(mode)
-    if ME.MatchActive or sessionBusy() then return end
+    if sessionBusy() or ME.MatchActive then return end
     if not isValidMode(mode) then return end
     if prune(mode) < minFor(mode) then return end
 
@@ -131,6 +136,7 @@ function ME.MM.Launch(mode)
 
     for _, p in ipairs(launched) do
         if IsValid(p) then
+            if ME.Party and ME.Party.StopQueue then ME.Party.StopQueue(p) end
             net.Start("ME_MM_Found")
             net.WriteString(mode)
             net.Send(p)
@@ -140,7 +146,7 @@ function ME.MM.Launch(mode)
 end
 
 function ME.MM.LaunchWith(mode, players)
-    if ME.MatchActive or sessionBusy() then return false end
+    if sessionBusy() or ME.MatchActive then return false end
     if not isValidMode(mode) then return false end
     local cap = maxPlayers()
     ME.Used = {}
@@ -162,7 +168,10 @@ function ME.MM.LaunchWith(mode, players)
     if ME.Session then ME.Session.Begin("mm", mode) else ME.StartMatch() end
 
     for _, p in ipairs(launched) do
-        if IsValid(p) then net.Start("ME_MM_Found"); net.WriteString(mode); net.Send(p) end
+        if IsValid(p) then
+            if ME.Party and ME.Party.StopQueue then ME.Party.StopQueue(p) end
+            net.Start("ME_MM_Found"); net.WriteString(mode); net.Send(p)
+        end
     end
     broadcastCounts()
     return true

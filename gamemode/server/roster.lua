@@ -18,6 +18,10 @@ function ME.BuildRoster()
 	end
 end
 
+function ME.FactionInPlay(i)
+	return (ME.Roster and ME.Roster[i]) ~= nil
+end
+
 function ME.SendRoster(target)
 	local maxF = ME.Config.MaxFactions
 	net.Start("ME_Roster")

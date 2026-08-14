@@ -139,12 +139,6 @@ function M.RefreshLobby()
     local ply = LocalPlayer()
     if not IsValid(ply) or not ply:IsPlayer() then return end
 
-    local unranked = mathMax(0, ply:GetNWInt("ME_UnrankedWins", 0))
-    local ranked   = mathMax(0, ply:GetNWInt("ME_RankedWins", 0))
-    local losses   = mathMax(0, ply:GetNWInt("ME_RankedLosses", 0))
-    local wl       = (ranked + losses) > 0 and mathFloor(ranked / (ranked + losses) * 100) or 0
-    local since    = ply:GetNWString("ME_PlayedSince", "")
-    local playSec  = readPlayerPlaytime(ply)
     local frag     = mathMax(0, ply:GetNWInt("ME_Fragments", 0))
     local gem      = mathMax(0, ply:GetNWInt("ME_Gems", 0))
 
@@ -156,12 +150,6 @@ function M.RefreshLobby()
 
     S.panel:RunJavascript(strFormat("try{CineAPI.showReconnect(%s)}catch(e){}", S.canRejoin and "true" or "false"))
 
-    S.panel:RunJavascript(strFormat(
-        "try{CineAPI.setPlayerStats(%d,%d,%s,%s,%s)}catch(e){}",
-        unranked, ranked,
-        jsq(wl .. "%"),
-        jsq(strFormat("%.1fh", playSec / 3600)),
-        jsq(since ~= "" and since or "—")))
     S.panel:RunJavascript(strFormat("try{CineAPI.setCurrencies(%d,%d)}catch(e){}", frag, gem))
     S.panel:RunJavascript(strFormat("try{CineAPI.setActiveMatches(%d)}catch(e){}", mathFloor(tonumber(matches) or 0)))
 

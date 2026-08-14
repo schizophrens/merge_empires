@@ -91,8 +91,8 @@ end
 
 util.AddNetworkString("ME_CoreBeam")
 
-ME.CoreDefRangeHex = ME.CoreDefRangeHex or 5
-ME.CoreDefDamage   = ME.CoreDefDamage   or 130
+ME.CoreDefRangeHex = 4
+ME.CoreDefDamage   = 85
 ME.CoreDefReload   = ME.CoreDefReload   or 0.5
 
 local BEAM_REFRESH = 0.35
@@ -129,6 +129,7 @@ local function sendBeam(fac, origin, tgt)
 	net.WriteVector(origin)
 	net.WriteVector(valid and tgt:GetPos() or origin)
 	net.WriteUInt(valid and tgt:EntIndex() or 0, 16)
+	net.WriteInt(valid and ((ME.EntFaction and ME.EntFaction(tgt)) or 0) or 0, 8)
 	net.Broadcast()
 end
 

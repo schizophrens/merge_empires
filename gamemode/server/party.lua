@@ -8,6 +8,8 @@ util.AddNetworkString("ME_Party_Toast")
 util.AddNetworkString("ME_Party_Request")
 util.AddNetworkString("ME_Party_Players")
 util.AddNetworkString("ME_Party_Invite")
+util.AddNetworkString("ME_Party_InviteReq")
+util.AddNetworkString("ME_Party_InviteAnswer")
 util.AddNetworkString("ME_Party_Kick")
 
 ME.Party = ME.Party or {}
@@ -202,6 +204,13 @@ function ME.Party.SetQueue(ply, on)
     syncLobby(lobby)
 end
 
+function ME.Party.StopQueue(ply)
+    local lobby = lobbyOf(ply)
+    if not lobby or not lobby.queuing then return end
+    lobby.queuing = false
+    syncLobby(lobby)
+end
+
 local function statusOf(ply)
     if ME.IsInMenu and ME.IsInMenu(ply) then return "In lobby" end
     return "In game"
@@ -230,6 +239,11 @@ local function broadcastPlayers()
     end
 end
 
+local INVITE_COOLDOWN = 30
+local INVITE_EXPIRE   = 30
+local inviteCD = {}
+ME.Party.Invites = ME.Party.Invites or {}
+
 function ME.Party.Invite(inviter, sid)
     if not IsValid(inviter) then return end
     local lobby = lobbyOf(inviter)
@@ -242,8 +256,33 @@ function ME.Party.Invite(inviter, sid)
     end
     if not IsValid(target) or target == inviter then return end
     if ME.IsInMenu and not ME.IsInMenu(target) then toast(inviter, nameOf(target) .. " is already in a match.") return end
-    ME.Party.Join(target, lobby.code)
-    toast(inviter, nameOf(target) .. " joined the lobby.")
+
+    local key = inviter:SteamID() .. ">" .. sid
+    local now = CurTime()
+    if (inviteCD[key] or 0) > now then
+        toast(inviter, "Wait " .. math.ceil(inviteCD[key] - now) .. "s before inviting " .. nameOf(target) .. " again.")
+        return
+    end
+    inviteCD[key] = now + INVITE_COOLDOWN
+
+    ME.Party.Invites[target:SteamID()] = { code = lobby.code, from = nameOf(inviter), expire = now + INVITE_EXPIRE }
+
+    net.Start("ME_Party_InviteReq")
+    net.WriteString(inviter:SteamID())
+    net.WriteString(nameOf(inviter))
+    net.Send(target)
+
+    toast(inviter, "Invite sent to " .. nameOf(target) .. ".")
+end
+
+function ME.Party.AnswerInvite(ply, accept)
+    if not IsValid(ply) then return end
+    local inv = ME.Party.Invites[ply:SteamID()]
+    ME.Party.Invites[ply:SteamID()] = nil
+    if not inv then return end
+    if not accept then return end
+    if inv.expire < CurTime() then toast(ply, "That invite has expired.") return end
+    ME.Party.Join(ply, inv.code)
 end
 
 function ME.Party.Kick(leader, sid64)
@@ -287,6 +326,12 @@ net.Receive("ME_Party_Invite", function(_, ply)
     local sid = net.ReadString()
     if throttle(ply, "invite", 1) then return end
     ME.Party.Invite(ply, sid)
+end)
+
+net.Receive("ME_Party_InviteAnswer", function(_, ply)
+    local accept = net.ReadBool()
+    if throttle(ply, "inviteanswer", 0.3) then return end
+    ME.Party.AnswerInvite(ply, accept)
 end)
 
 net.Receive("ME_Party_Leave", function(_, ply)

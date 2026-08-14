@@ -500,6 +500,26 @@ function notify(msg,type){
   ntTimer=setTimeout(function(){if(ntEl)ntEl.classList.remove('show')},3000);
 }
 
+var irEl=$('mmInviteReq'),irTextEl=$('irText'),irYesEl=$('irYes'),irNoEl=$('irNo'),irTimer=null;
+function inviteReqHide(){
+  if(irTimer){clearTimeout(irTimer);irTimer=null}
+  if(irEl)irEl.classList.remove('show');
+}
+function inviteReqShow(name){
+  if(!irEl||!irTextEl)return;
+  irTextEl.textContent=String(name||'A PLAYER').toUpperCase()+' WANTS YOU IN THEIR LOBBY';
+  irEl.classList.add('show');
+  if(irTimer)clearTimeout(irTimer);
+  irTimer=setTimeout(function(){inviteReqHide()},30000);
+}
+function inviteReqAnswer(ok){
+  playHover();
+  inviteReqHide();
+  fire('PartyInviteAnswer',ok?'1':'0');
+}
+if(irYesEl){irYesEl.onmouseenter=function(){playHover()};irYesEl.onclick=function(){inviteReqAnswer(true)}}
+if(irNoEl){irNoEl.onmouseenter=function(){playHover()};irNoEl.onclick=function(){inviteReqAnswer(false)}}
+
 var shopTabsEls=[].slice.call(document.querySelectorAll('.shopTab'));
 var SHOP_PANES={skins:'shopSkins',gems:'shopGems'};
 function shopShow(key){
@@ -592,18 +612,12 @@ window.CineAPI={
   lbMemberAvatar:function(s,u){lbMemberSetAvatar(s,u)},
   toast:function(msg){if(pendingJoin){pendingJoin='';flashJoin(false);cmFlash(false)}notify(msg)},
   notify:function(msg,type){notify(msg,type)},
+  inviteRequest:function(name){inviteReqShow(name)},
   purchase:function(msg){notify(msg,'ok');playPurchase()},
   playPurchase:function(){playPurchase()},
   reward:function(icon,count,name,type){if(window._rwOpt&&(Date.now()-window._rwOpt)<2500){window._rwOpt=0;return}rewardShow(icon,count,name,type)},
   setMultiplayer:function(mp){if(mainMenu)mainMenu.classList.toggle('mpMulti',!!mp)},
   showReconnect:function(show){if(mainMenu)mainMenu.classList.toggle('rcOpen',!!show)},
-  setPlayerStats:function(unranked,ranked,wl,playtime,since){
-    var u=$('psUnranked');if(u)u.textContent=fmt(unranked);
-    var r=$('psRanked');if(r)r.textContent=fmt(ranked);
-    var w=$('psWL');if(w)w.textContent=String(wl);
-    var p=$('psPlaytime');if(p)p.textContent=String(playtime);
-    var sc=$('psSince');if(sc)sc.textContent=String(since);
-  },
   setCurrencies:function(frag,gem){
     var f=$('curFrag');if(f)f.textContent=fmt(frag);
     var g=$('curGem');if(g)g.textContent=fmt(gem);

@@ -97,15 +97,6 @@ function M._BuildMarkup(params)
     <div class="rcBtn" id="rcRejoin"><span>REJOIN</span></div>
   </div>
 
-  <div id="mmPlayerStats">
-    <div class="psTitle">PLAYER STATS</div>
-    <div class="psRow">Unranked wins: <span id="psUnranked">0</span></div>
-    <div class="psRow">Ranked wins: <span id="psRanked">0</span></div>
-    <div class="psRow">Ranked W/L: <span id="psWL">0%</span></div>
-    <div class="psRow">Playtime: <span id="psPlaytime">0h</span></div>
-    <div class="psRow">Played since <span id="psSince">&#8212;</span></div>
-  </div>
-
   <div id="mmLobby">
     <div class="lbMembers" id="lbMembers">
       <div class="lobbyBanner self" data-act="profile">
@@ -386,6 +377,16 @@ function M._BuildMarkup(params)
     <div class="ntShine"></div>
     <i class="ntcTRh"></i><i class="ntcTRv"></i><i class="ntcBLh"></i><i class="ntcBLv"></i>
     <div class="ntText" id="ntText"></div>
+  </div>
+
+  <div id="mmInviteReq">
+    <div class="ntShine"></div>
+    <i class="ntcTRh"></i><i class="ntcTRv"></i><i class="ntcBLh"></i><i class="ntcBLv"></i>
+    <div class="ntText" id="irText"></div>
+    <div class="irBtns">
+      <div class="irBtn irYes" id="irYes"><span>YES</span></div>
+      <div class="irBtn irNo" id="irNo"><span>NO</span></div>
+    </div>
   </div>
 
   <div id="mmReward">

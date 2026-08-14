@@ -66,6 +66,8 @@ timer.Create("ME_TurretFire", 0.1, 0, function()
 					net.Start("ME_TurretFire")
 					net.WriteUInt(t:EntIndex(), 16)
 					net.WriteVector(best:GetPos())
+					net.WriteInt(fac, 8)
+					net.WriteInt((ME.EntFaction and ME.EntFaction(best)) or 0, 8)
 					net.Broadcast()
 				end
 			end

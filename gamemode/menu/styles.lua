@@ -103,18 +103,10 @@ html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:t
 /* DISCONNECTED FROM A MATCH: no panel background, centred REJOIN button, top-left, only in the PLAY tab */
 #mmReconnect{position:fixed;left:34px;top:104px;z-index:2402;display:none;flex-direction:column;align-items:center;gap:16px;pointer-events:auto;animation:menuIn .3s ease both}
 #mainMenu.rcOpen:not(.navShop):not(.navInv) #mmReconnect{display:flex}
-#mainMenu.rcOpen #mmPlayerStats{display:none}
 .rcTitle{font-family:'EinaSemiBold','Segoe UI',sans-serif;font-weight:800;font-size:20px;letter-spacing:.4px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.85)}
 .rcBtn{width:186px;height:54px;background:#ff8018;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,255,255,.2),0 4px 12px rgba(0,0,0,.4);transition:filter .12s,transform .1s}
 .rcBtn:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .rcBtn span{font-family:'EinaSemiBold','Segoe UI',sans-serif;font-weight:800;font-size:24px;letter-spacing:1px;color:#fff}
-/* PLAYER STATS: plain text, no background, top-left. Only in multiplayer (mainMenu.mpMulti) and only on
-   the lobby home view (hidden while a subnav panel / shop / mode-select / etc. is open). */
-#mmPlayerStats{position:fixed;left:34px;top:104px;z-index:2336;pointer-events:none;display:none;animation:menuIn .45s cubic-bezier(.4,0,.2,1) .1s both}
-.psTitle{font-family:'EinaSemiBold','Segoe UI',sans-serif;font-weight:700;font-size:19px;letter-spacing:1.5px;color:#fff;text-transform:uppercase;margin-bottom:12px;text-shadow:0 1px 4px rgba(0,0,0,.8)}
-.psRow{font-family:'HanleyPro','Segoe UI',sans-serif;font-size:15px;line-height:1.85;color:#c3c7cd;text-shadow:0 1px 3px rgba(0,0,0,.8)}
-.psRow span{color:#fff;font-weight:400}
-#mainMenu.mpMulti:not(.subRanks):not(.subLeaderboard):not(.subCustom):not(.subServers):not(.navShop):not(.navInv):not(.modeSelecting) #mmPlayerStats{display:block}
 #mmLobby{position:fixed;left:0;right:0;top:122px;bottom:196px;z-index:2335;display:flex;align-items:stretch;justify-content:center;pointer-events:none}
 /* two equal-width flex sides keep the leader banner dead-centre no matter how many joiners each holds.
    .lbMembers must span a fixed width (not shrink-to-fit) so the two flex:1 sides are truly equal. */
@@ -300,7 +292,15 @@ html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;background:t
 #mmNotif.ntOk{background:rgba(43,158,71,.96)}
 #mmNotif.show{opacity:1;transform:translateX(0)}
 .ntShine{position:absolute;top:0;bottom:0;left:0;width:55%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.16) 50%,transparent 100%);animation:qShine 5s ease-in-out infinite;pointer-events:none;z-index:0}
-#mmNotif i{position:absolute;z-index:2;pointer-events:none}
+#mmNotif i,#mmInviteReq i{position:absolute;z-index:2;pointer-events:none}
+#mmInviteReq{position:fixed;top:90px;right:24px;z-index:2366;width:262px;padding:13px 18px 14px;background:rgba(30,34,44,.97);box-shadow:0 8px 26px rgba(0,0,0,.5);overflow:hidden;pointer-events:none;opacity:0;transform:translateX(125%);transition:opacity .3s ease,transform .42s cubic-bezier(.22,1,.36,1)}
+#mmInviteReq.show{opacity:1;transform:translateX(0);pointer-events:auto}
+.irBtns{position:relative;z-index:3;display:flex;gap:10px;margin-top:12px}
+.irBtn{flex:1 1 0;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 2px 0 rgba(255,255,255,.18),0 3px 10px rgba(0,0,0,.38);transition:filter .12s,transform .1s}
+.irBtn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.irBtn span{font-family:'EinaSemiBold','Segoe UI',sans-serif;font-weight:400;font-size:15px;letter-spacing:1.2px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.45)}
+.irYes{background:rgba(43,158,71,.96)}
+.irNo{background:rgba(200,46,46,.96)}
 .ntcTRh{top:0;right:0;height:3px;width:62px;background:linear-gradient(to left,rgba(255,255,255,.92),rgba(255,255,255,0))}
 .ntcTRv{top:0;right:0;width:3px;height:62px;background:linear-gradient(to bottom,rgba(255,255,255,.92),rgba(255,255,255,0))}
 .ntcBLh{bottom:0;left:0;height:3px;width:62px;background:linear-gradient(to right,rgba(255,255,255,.92),rgba(255,255,255,0))}

@@ -101,12 +101,13 @@ function ENT:SetUnit(kind, faction)
 	local k = ME.GetUnitKind(kind)
 	self.MEKind    = kind
 	self.MEFaction = faction or 0
-	self.Speed     = k.speed
+	self.Speed     = (k.speed or 220) * (ME.UnitSpeedScale or 1)
 	self.MEScale   = k.scale or 1
 	self.MEYaw     = k.yaw or 0
 	self.MERadius  = k.radius or 20
 	self.MEDmg     = k.dmg or 0
 	self.MERange   = k.range or 0
+	self.MERangeHex = k.rangeHex
 	self.MEReload  = k.reload or 1
 	self.MESplash  = k.splash
 	self.MEVehicle = k.vehicle == true
@@ -614,7 +615,10 @@ function ENT:BargeDropOff()
 end
 
 function ENT:Think()
-	local nt = CurTime() + 0.03
+	local now = CurTime()
+	local nt  = now + 0.03
+	local dt  = math.Clamp(now - (self._lastThink or now), 0, 0.25)
+	self._lastThink = now
 
 	if self.MEStowed then
 		if IsValid(self.MEStowed) then self:SetPos(self.MEStowed:GetPos()) else self.MEStowed = nil end
@@ -640,7 +644,7 @@ function ENT:Think()
 				else
 					local dir = bt:GetPos() - self:GetPos(); dir.z = 0
 					local d = dir:Length(); dir:Normalize()
-					local np = self:GetPos() + dir * math.min((self.Speed or 220) * FrameTime(), d - CLOSE)
+					local np = self:GetPos() + dir * math.min((self.Speed or 220) * dt, d - CLOSE)
 					if not onWalkable(np, self.MEDomain) then self._buildFromHere = true; self:NextThink(nt); return true end
 					np.z = surfaceZ(np)
 					self:SetPos(np)
@@ -689,7 +693,7 @@ function ENT:Think()
 			end
 		else
 			local dir  = flat:GetNormalized()
-			local step = math.min((self.Speed or 220) * FrameTime(), dist)
+			local step = math.min((self.Speed or 220) * dt, dist)
 			local np   = cur + dir * step
 			np.z = surfaceZ(np)
 			self:SetPos(np)
@@ -984,6 +988,9 @@ function ME.FireArtillery(u, tpos)
 				local c = IsValid(o) and o:GetClass()
 				if (c == "ent_me_building" and not MINE_BIDS[o.MEBID] or c == "ent_me_core") and isEnemyEnt(myFac, o) then
 					damageEnt(o, dmg, myFac)
+				elseif c == "ent_me_unit" and not o.MEStowed and isEnemyEnt(myFac, o) then
+					local f = splashFrac(o, tpos:Distance(o:GetPos()), splash)
+					if f > 0 then damageEnt(o, dmg * f, myFac) end
 				end
 			end
 		end)
@@ -1019,13 +1026,20 @@ hook.Add("Think", "ME_UnitCombat", function()
 		if canFight then
 			local myFac, pos, range = u.MEFaction or 0, u:GetPos(), u.MERange or 0
 			local best, bestPr, bestd
+			local rHex   = u.MERangeHex
+			local uq, ur = ME.WorldToHex(pos)
+			local function inHexRange(o)
+				if not rHex then return true end
+				local oq, orr = ME.WorldToHex(o:GetPos())
+				return ME.HexDistance(uq, ur, oq, orr) <= rHex
+			end
 
 			if IsValid(u.MEForceTarget) and isEnemyEnt(myFac, u.MEForceTarget) and targetable(u.MEForceTarget, u)
-			   and pos:Distance(u.MEForceTarget:GetPos()) <= range then
+			   and pos:Distance(u.MEForceTarget:GetPos()) <= range and inHexRange(u.MEForceTarget) then
 				best = u.MEForceTarget
 			else
 				for _, o in ipairs(ents.FindInSphere(pos, range)) do
-					if targetable(o, u) and isEnemyEnt(myFac, o) then
+					if targetable(o, u) and isEnemyEnt(myFac, o) and inHexRange(o) then
 						local pr = targetPriority(o)
 						local d  = pos:DistToSqr(o:GetPos())
 						if not best or pr < bestPr or (pr == bestPr and d < bestd) then best, bestPr, bestd = o, pr, d end

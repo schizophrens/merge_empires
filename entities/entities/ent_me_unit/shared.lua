@@ -17,6 +17,8 @@ ME = ME or {}
 ME.HexSpacing = ((ME and ME.Config and ME.Config.HexSize) or 96) * math.sqrt(3)
 function ME.HexRange(tiles) return math.floor(tiles * ME.HexSpacing + 0.5) end
 
+ME.UnitSpeedScale = 0.55
+
 ME.UnitKinds = {
 	builder = {
 		name   = "Builder",
@@ -54,7 +56,7 @@ ME.UnitKinds = {
 		name = "Rocketeer", desc = "A soldier that fires explosive rockets.",
 		model = "models/tt_soldiers/green_officer.mdl", weapon = "models/tt_soldiers/weapons/w_rpg.mdl", animset = "launcher",
 		hp = 180, speed = 195, cost = 2500, pop = 2, build = 16, scale = 0.7, yaw = -90, radius = 20,
-		dmg = 110, rangeHex = 2, range = ME.HexRange(2), reload = 3.2, splash = 190,
+		dmg = 165, rangeHex = 2, range = ME.HexRange(2), reload = 3.2, splash = 190,
 	},
 
 	humvee = {

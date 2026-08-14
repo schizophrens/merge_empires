@@ -57,6 +57,9 @@ if(ci){
 ]==]
 
 local function maxFac() return (ME.Config and ME.Config.MaxFactions) or 6 end
+local function chatLive()
+	return (ME.InGame and ME.InGame()) or ME.MatchOver == "spectate"
+end
 local function canChat()
 	if ME.MatchOver == "spectate" then return true end
 	if ME.MatchOver then return false end
@@ -148,7 +151,7 @@ local function removePanel()
 end
 
 function C.OnMessage(ply, text)
-	if not IsValid(ply) or not (ME.InGame and ME.InGame()) then return end
+	if not IsValid(ply) or not chatLive() then return end
 	if not IsValid(dhtml) then return end
 	lastMsg = CurTime()
 	local name = ply:Nick() or "Player"
@@ -161,7 +164,7 @@ function C.OnMessage(ply, text)
 end
 
 function C.OnSystem(text, r, g, b)
-	if not (ME.InGame and ME.InGame()) or not IsValid(dhtml) then return end
+	if not chatLive() or not IsValid(dhtml) then return end
 	lastMsg = CurTime()
 	local col = string.format("#%02x%02x%02x", r or 210, g or 214, b or 220)
 	dhtml:RunJavascript("chatTeamMsg(" .. jsq(text) .. "," .. jsq(col) .. ")")

@@ -116,6 +116,17 @@ function SS.CheckEmpty()
     SS.End()
 end
 
+function SS.Deserted()
+    return SS.active and SS.HumanCount() == 0 and SS.SpectatorCount() == 0
+end
+
+function SS.ReclaimIfDeserted()
+    if not SS.Deserted() then return false end
+    if ME.ClearAllReconnects then ME.ClearAllReconnects() end
+    SS.End()
+    return true
+end
+
 function SS.End()
     if not SS.active then return end
     SS.active = false
@@ -142,7 +153,7 @@ end
 
 function SS.CreateCustom(host, mode)
     if not IsValid(host) then return end
-    if SS.active then
+    if SS.active and not SS.ReclaimIfDeserted() then
 
         if ME.Party and ME.Party.Toast then ME.Party.Toast(host, "A match is already running. Try again shortly.") end
         return
@@ -273,6 +284,8 @@ end)
 hook.Add("MEMenu_SpectateCode", "ME_Session_Spectate", function(ply, code)
     return SS.SpectateCustom(ply, code)
 end)
+
+timer.Create("ME_Session_EmptySweep", 5, 0, function() SS.CheckEmpty() end)
 
 hook.Add("PlayerDisconnected", "ME_Session_Cleanup", function(ply)
     if not SS.active then return end

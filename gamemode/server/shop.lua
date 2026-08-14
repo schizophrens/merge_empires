@@ -55,7 +55,7 @@ net.Receive("ME_Shop_Gem", function(_, ply)
 
     if hook.Run("MEMenu_GemBuy", ply, g) ~= nil then return end
 
-    notify(ply, "Gem packs are not available on this server.", false)
+    ME.GrantGemPack(ply, g.id)
 end)
 
 function ME.GrantGemPack(ply, id)
